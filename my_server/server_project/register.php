@@ -1,0 +1,27 @@
+<?php
+require "connect.php";
+if (!$con) {
+    echo "connection error";
+}
+
+$first_name = $_POST['first_name'];
+$last_name = $_POST['last_name'];
+$user_name = $_POST['user_name'];
+$email = $_POST['email'];
+$password = $_POST['password'];
+$encrypted_pwd = md5($password);
+$sql = "SELECT * FROM user WHERE user_name = '$user_name'";
+
+
+$result = mysqli_query($con, $sql);
+$count = mysqli_num_rows($result);
+
+if ($count == 1) {
+    echo json_encode('Error');
+} else {
+    $insert = "INSERT INTO user(first_name,last_name,user_name,email,password)VALUES('$first_name','$last_name','$user_name','$email','$encrypted_pwd')";
+    $query = mysqli_query($con, $insert);
+    if ($query) {
+        echo json_encode('Succeed');
+    }
+}
